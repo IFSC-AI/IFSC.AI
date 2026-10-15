@@ -1,10 +1,10 @@
-/* =========================================================
+/* 
    IFSC AI — Página de ajuda
    Paleta: #00E6A8, preto, branco, cinza bem escuro
    Fonte: EB Garamond (serifada, elegante e tecnológica)
    ========================================================= */
 
-/* ---------- Variáveis ---------- */
+/*  Variáveis  */
 :root {
   --accent: #00E6A8;
   --accent-soft: rgba(0, 230, 168, 0.12);
@@ -24,7 +24,7 @@
   --nav-height: 72px;
 }
 
-/* ---------- Reset básico ---------- */
+/*  Reset básico  */
 *,
 *::before,
 *::after {
@@ -61,7 +61,7 @@ a {
   outline-offset: 3px;
 }
 
-/* ---------- Utilitários ---------- */
+/*  Utilitários  */
 .container {
   width: 100%;
   max-width: var(--max-width);
@@ -137,7 +137,7 @@ h3 {
   font-size: 0.95rem;
 }
 
-/* ---------- Navbar ---------- */
+/*  Navbar  */
 .navbar {
   position: sticky;
   top: 0;
@@ -199,7 +199,7 @@ h3 {
   width: 100%;
 }
 
-/* ---------- Hero ---------- */
+/*  Hero  */
 .hero {
   min-height: 510px;
   display: flex;
@@ -242,7 +242,7 @@ h3 {
   justify-content: center;
 }
 
-/* ---------- Seções ---------- */
+/*  Seções  */
 .section {
   padding: 5rem 0;
   scroll-margin-top: var(--nav-height);
@@ -254,7 +254,7 @@ h3 {
   border-bottom: 1px solid var(--border);
 }
 
-/* ---------- Passos ---------- */
+/*  Passos  */
 .steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -292,7 +292,7 @@ h3 {
   color: var(--muted);
 }
 
-/* ---------- FAQ ---------- */
+/*  FAQ  */
 .faq {
   border-top: 1px solid var(--border);
 }
@@ -340,7 +340,7 @@ h3 {
   color: var(--muted);
 }
 
-/* ---------- CTA ---------- */
+/*  CTA  */
 .cta {
   padding: 3.5rem 2rem;
   text-align: center;
@@ -365,7 +365,7 @@ h3 {
   color: var(--muted);
 }
 
-/* ---------- Footer ---------- */
+/*  Footer  */
 .footer {
   background: var(--black);
   border-top: 1px solid var(--border);
@@ -412,7 +412,7 @@ h3 {
   color: var(--muted);
 }
 
-/* ---------- Responsivo ---------- */
+/*  Responsivo  */
 @media (max-width: 860px) {
   .steps {
     grid-template-columns: 1fr;
@@ -461,7 +461,7 @@ h3 {
   }
 }
 
-/* ---------- Menos animação ---------- */
+/*  Menos animação  */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
