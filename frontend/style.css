@@ -199,6 +199,15 @@ h3 {
   width: 100%;
 }
 
+/* Aba atual */
+.nav-links a[aria-current="page"] {
+  color: var(--white);
+}
+
+.nav-links a[aria-current="page"]::after {
+  width: 100%;
+}
+
 /* ---------- Hero ---------- */
 .hero {
   min-height: 510px;
@@ -252,6 +261,12 @@ h3 {
   background: var(--black);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Páginas internas ---------- */
+.page-title {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  margin-bottom: 2rem;
 }
 
 /* ---------- Passos ---------- */
@@ -435,8 +450,9 @@ h3 {
   .nav-links {
     order: 3;
     width: 100%;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem 1rem;
   }
 
   .nav-links a {
