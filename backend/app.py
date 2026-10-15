@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-from flask import Flask, g
+from flask import Flask, g, jsonify
 import sqlite3
 
 BASE = Path(__file__).resolve().parent
@@ -36,3 +36,30 @@ def init_db():
     
 def rows(cur):
     return [dict(r) for r in cur.fetchall(s)]
+
+
+
+# Parte 2 - Rotas de Admin ----------------------------------------------
+@app.post("/api/conversas")
+@admin_required
+def registrar_conversa():
+    #função serve para o n8n chamar essa rota para assim registrar o que chega do wpp
+    d = request.get_json(silent=True) or {}
+    if not d.get("pergunta"): #trata um possivel erro caso não haja pergunta
+        return jsonify(erro="campo 'pergunta' obrigatório"), 400
+    registrar(get_db(), d.get("origem", "whatsapp"), d["pergunta"],
+            d.get("resposta"), d.get("encontrou", True))
+    return jsonify(ok = True), 201
+
+# faltou terminar essa parte, faltam os comando sql
+
+
+# Parte 3 - Rotas Públicas
+
+
+
+# Parte 4 - Utilidades
+
+
+
+# Parte 5 - Integração com Frontend
