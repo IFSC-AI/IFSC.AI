@@ -269,11 +269,30 @@ h3 {
   margin-bottom: 2rem;
 }
 
+/* Quem nós somos */
+.about .lead {
+  max-width: none;
+  color: var(--white);
+}
+
+.about p:not(.eyebrow):not(.lead) {
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.about p + p {
+  margin-top: 1.25rem;
+}
+
 /* ---------- Passos ---------- */
-.steps {
+.steps,
+.card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+.steps {
   counter-reset: step;
 }
 
@@ -429,7 +448,8 @@ h3 {
 
 /* ---------- Responsivo ---------- */
 @media (max-width: 860px) {
-  .steps {
+  .steps,
+  .card-grid {
     grid-template-columns: 1fr;
   }
 }
