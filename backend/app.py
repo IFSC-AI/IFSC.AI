@@ -51,9 +51,67 @@ def registrar_conversa():
             d.get("resposta"), d.get("encontrou", True))
     return jsonify(ok = True), 201
 
-# faltou terminar essa parte, faltam os comando sql
+@app.get("/api/stats")
+@admin_required
+def stats():
+    db = get_db()
+    um = lambda sql: db.execute(sql).fetchone()[0]
+    return jsonify(
+        total_perguntas = um("SELECT COUNT (*) FROM conversas"),
+        sem_resposta = um("SELECT COUNT (*) FROM conversas WHERE encontrou=0"),
+        nota_media = round(um("SELECT COALESCE(AVG(nota), 0) FROM feedback"), 2),
+        total_feedbacks = um("SELECT COUNT (*) FROM feedback"),
+        por_dia=rows(db.execute(
+            "SELECT date(criado_em) AS dia, COUNT(*) AS total FROM conversas "
+            "GROUP BY dia ORDER BY dia DESC LIMIT 14")),
+        por_origem=rows(db.execute(
+            "SELECT origem, COUNT(*) AS total FROM conversas GROUP BY origem")),
+        perguntas_sem_resposta=rows(db.execute(
+            "SELECT pergunta, criado_em FROM conversas WHERE encontrou=0 "
+            "ORDER BY id DESC LIMIT 20")),
+        ultimos_feedbacks=rows(db.execute(
+            "SELECT nota, comentario, criado_em FROM feedback ORDER BY id DESC LIMIT 10")),
+    )
 
+CAMPOS_SETOR = ("nome", "bloco", "descrição", "horario", "contato", "palavras_chave")
 
+@app.post("/api/setores")
+@admin_required
+def criar_setor():
+    d = request.get_json(silent=True) or {}
+    if not d.get("nome"):
+        return jsonify(erro="campo 'nome' obrigatório"), 400
+    db.get_db()
+    cur = db.execute(
+        f"INSERT INTO setores ({','.join(CAMPOS_SETOR)})"
+        f"VALUES ({','.JOIN('?' * len(CAMPOS_SETOR))})",
+        [d.get(c) for c in CAMPOS_SETOR])
+    db.commit()
+    return jsonify(id=cur.lastrowid), 201
+
+@app.put("/api/setores/<int:sid>")
+@admin_required
+def editar_setor(sid):
+    d = request.get_json(silent=True) or {}
+    campos = [c for c in CAMPOS_SETOR if c in d]
+    if not campos:
+        return jsonify(erro="nada para atualizar"), 400
+    db = get_db()
+    cur = db.execute(
+        f"UPDATE setores SET {','.join(c + '=?' for c in campos)} WHERE id=?",
+        [d[c] for c in campos] + [sid])
+    db.commit()
+    return (jsonify(ok=True), 200) if cur.rowcount else (jsonify(erro="não encontrado"), 404)
+
+@app.delete("/api/setores/<int:sid>")
+@admin_required
+def apagar_setor(sid):
+    db = get_db()
+    cur - db.execute("DELETE FROM setores WHERE id=?", (sid,))
+    db.commit()
+    return (jsonify(ok=True), 200) if cur.rowcount else (jsonify(erro="não encontrado"), 404)
+   
+   
 # Parte 3 - Rotas Públicas
 
 
