@@ -1,12 +1,11 @@
 # Base de conhecimento IFSC AI — IFSC Câmpus Chapecó
 
-Oct 13, 2026 · @Sc4lv1
+Oct 13, 2026 · @Sc4lv1 - Vicenzo Scalvi
 
 ## Como usar esta base
 
 Esta base reúne, em um só lugar, as respostas do IFSC AI sobre o IFSC Câmpus Chapecó, e cada pergunta aparece uma única vez. Cada resposta traz um status, para separar o que é informação estável do que é relato de entrevista ou ponto ainda não confirmado.
 
-Material de apoio: [apresentação do projeto (Canva)](https://canva.link/y9mbvw9nnsv7h50).
 
 **Status de cada resposta**
 
