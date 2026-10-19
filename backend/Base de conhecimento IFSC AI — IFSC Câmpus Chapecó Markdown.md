@@ -1,6 +1,6 @@
 # Base de conhecimento IFSC AI — IFSC Câmpus Chapecó
 
-Oct 13, 2026 · @Sc4lv1 - Vicenzo Scalvi
+Oct 19, 2026 · @Sc4lv1 - Vicenzo Scalvi
 
 ## Como usar esta base
 
