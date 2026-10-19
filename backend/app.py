@@ -11,7 +11,7 @@ N8N_URL = os.environ.get("N8N_URL", "").strip()
 
 app = Flask(__name__, static_folder=None)
 
-# Parte 1 - Banco de Dados ---------------------------------------------
+# Parte 1 - Banco de Dados 
 
 def get_db():
     # essa função devolve a conexão com o Banco, criando uma só vez por requisição
