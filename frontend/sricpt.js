@@ -1,19 +1,20 @@
-// script.js — ponte entre o front-end (este site) e o futuro backend do IFSC.AI
+// Sc4lv1
+//script.js — ponte entre o front-end (este site) e para o backend do IFSC.AI
 //
-// COMO LIGAR QUANDO O BACKEND EXISTIR:
-//   1. Preencha CONFIG.API_BASE com a URL do backend (em produção, HTTPS).
-//   2. Libere CORS no backend para o domínio do site.
-//   3. Garanta que as rotas abaixo respondam no formato combinado.
+// Como linkar o backend após o termino de configuração do backend:
+//   1. Preencher CONFIG.API_BASE com a URL do backend (em produção, HTTPS).
+//   2. Liberar CORS no backend para o domínio do site.
+//   3. Garantir que as rotas abaixo respondam no formato combinado.
 //
 // Enquanto CONFIG.API_BASE estiver vazio, a ponte fica DESLIGADA: nenhuma requisição
 // é feita, não aparece erro no console e o site funciona só com o HTML estático.
 //
-// ATENÇÃO: tudo que está neste arquivo é público. Nunca coloque chaves, tokens ou senhas aqui.
+// ATENÇÃO: tudo que está neste arquivo é público. Não coloque chaves, tokens ou senhas aqui.
 //
 // CONTRATO COMBINADO COM O BACKEND:
 //   GET /faq  ->  200  [ { "pergunta": "texto", "resposta": "texto" }, ... ]
 //
-// Para criar uma nova integração: adicione a rota em ROTAS e chame api(ROTAS.suaRota).
+// Quando foi  criar uma nova integração: adicione a rota em ROTAS e chame api(ROTAS.suaRota).
  
 const CONFIG = {
   // Ex.: 'http://localhost:3000/api' (teste local) ou 'https://api.seudominio.com/api' (produção)
