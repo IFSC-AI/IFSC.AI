@@ -56,3 +56,34 @@ async function api(caminho, opcoes = {}) {
   }
 }
  
+
+/**
+ * FAQ dinâmico (exemplo de uso da ponte).
+ * Se a ponte estiver desligada ou o backend falhar, mantém o FAQ estático do HTML.
+ */
+async function carregarFaq() {
+  const lista = document.getElementById('faq-lista');
+  if (!lista || !ponteAtiva()) return;
+ 
+  try {
+    const itens = await api(ROTAS.faq);
+    if (!Array.isArray(itens) || itens.length === 0) return;
+ 
+    // textContent (e não innerHTML) evita injeção de HTML vindo do servidor.
+    const elementos = itens.map(({ pergunta, resposta }) => {
+      const detalhes = document.createElement('details');
+      const titulo = document.createElement('summary');
+      const texto = document.createElement('p');
+      titulo.textContent = pergunta;
+      texto.textContent = resposta;
+      detalhes.append(titulo, texto);
+      return detalhes;
+    });
+ 
+    lista.replaceChildren(...elementos);
+  } catch (erro) {
+    console.warn('Backend indisponível; mantendo o FAQ estático.', erro);
+  }
+}
+ 
+document.addEventListener('DOMContentLoaded', carregarFaq);
