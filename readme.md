@@ -1,5 +1,7 @@
 # IFSC.AI
 
+
+
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-orange)
 ![Frontend](https://img.shields.io/badge/frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-blue)
 ![Backend](https://img.shields.io/badge/backend-Python%20%7C%20Flask-3776AB)
@@ -249,5 +251,5 @@ Projeto desenvolvido por estudantes do Instituto Federal de Santa Catarina — C
 A licença de distribuição do projeto ainda não foi definida.
 
 ---
-
+ifsc.AI-DataBase
 **IFSC.AI — Informação acessível, orientação inteligente.**
