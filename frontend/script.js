@@ -4,7 +4,7 @@
 const CONFIG = {
   // URL local da API FastAPI.
   // Em produção, substituir pela URL publicada da API.
-  API_BASE: 'http://127.0.0.1:8000/api',
+ API_BASE: "https://ifscai-api.vercel.app/api",
   TIMEOUT_MS: 8000,
 };
 
