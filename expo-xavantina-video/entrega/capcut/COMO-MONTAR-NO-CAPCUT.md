@@ -9,8 +9,8 @@ justamente para você trocar/editar qualquer parte sem refazer nada.
 |---|---|
 | `fundo-animado.mp4` | O fundo em movimento (luzes, feixes, partículas), **sem nenhum texto** |
 | `overlays/01..13_*.png` | Os grafismos de cada cena, **com fundo transparente** |
-| `../audio/locucao.wav` | A locução tratada (equalizada e comprimida) |
-| `../audio/musica-instrumental.m4a` | A cama musical 128 BPM |
+| `audio/locucao.m4a` | A locução tratada (equalizada e comprimida) |
+| `audio/musica-instrumental.m4a` | A cama musical 128 BPM |
 | `legendas.srt` | Legendas sincronizadas — o CapCut importa direto |
 | `folha-de-tempos.csv` | Entrada e saída exatas de cada cena |
 
@@ -23,7 +23,7 @@ justamente para você trocar/editar qualquer parte sem refazer nada.
 4. **Faixa 3 (grafismos):** arraste os PNGs de `overlays/` na ordem, cada um no
    tempo da folha. A moldura da foto nos cards de artista é **vazada**, então a
    foto da faixa 2 aparece dentro dela.
-5. **Áudio:** `locucao.wav` numa faixa e a música noutra. Se trocar por uma música
+5. **Áudio:** `audio/locucao.m4a` numa faixa e a música noutra. Se trocar por uma música
    da biblioteca do CapCut, deixe-a em torno de **−18 dB** e ative
    *Reduzir ruído/Ducking* para ela abaixar sob a voz.
 

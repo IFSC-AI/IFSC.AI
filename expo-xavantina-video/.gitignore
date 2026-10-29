@@ -1,3 +1,5 @@
 # Frames intermediários e WAVs de trabalho (regeneráveis com os scripts)
 build/
 entrega/audio/locucao.wav
+# Pacote zip: só reempacota o que já está versionado em entrega/capcut/
+entrega/capcut-expo-xavantina.zip
