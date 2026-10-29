@@ -1,0 +1,130 @@
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#07030E}
+#bg,#stage{position:absolute;inset:0;width:1920px;height:1080px}
+#stage{overflow:hidden}
+
+:root{
+  --ink:#fff;
+  --pink:#FF2E74;
+  --amber:#FFB01F;
+  --gold:#FFD24A;
+  --violet:#8B3DFF;
+}
+
+.scene{position:absolute;inset:0;opacity:0;will-change:opacity,transform}
+.anton{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase}
+.arch{font-family:'Archivo Black',Inter,sans-serif;text-transform:uppercase}
+.ui{font-family:Inter,'Inter Display',system-ui,sans-serif}
+
+/* ---- marca permanente nos cantos ---- */
+#lockup{position:absolute;inset:0;pointer-events:none}
+#lockup .brand{position:absolute;top:58px;left:76px;display:flex;align-items:center;gap:18px}
+#lockup .bmark{width:13px;height:52px;border-radius:7px;
+  background:linear-gradient(180deg,var(--amber),var(--pink));box-shadow:0 0 26px rgba(255,46,116,.8)}
+#lockup .btext{font-family:'Archivo Black',sans-serif;text-transform:uppercase;color:#fff;
+  font-size:30px;letter-spacing:.14em;line-height:1;text-shadow:0 3px 20px rgba(0,0,0,.6)}
+#lockup .btext span{display:block;font-family:Inter,sans-serif;font-weight:600;font-size:14.5px;
+  letter-spacing:.42em;color:var(--gold);margin-top:8px}
+#lockup .when{position:absolute;top:62px;right:76px;text-align:right;
+  font-family:Inter,sans-serif;font-weight:700;font-size:19px;letter-spacing:.3em;
+  color:rgba(255,255,255,.82);text-shadow:0 2px 14px rgba(0,0,0,.7)}
+
+/* ---- blocos de texto ---- */
+.center{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center}
+.kicker{font-family:Inter,sans-serif;font-weight:800;letter-spacing:.44em;
+  font-size:30px;color:var(--gold);text-transform:uppercase}
+.kicker.pink{color:var(--pink)}
+.mega{font-family:'Anton',sans-serif;text-transform:uppercase;color:#fff;line-height:.85;
+  letter-spacing:.012em;text-shadow:0 10px 60px rgba(0,0,0,.55)}
+.grad{background:linear-gradient(176deg,#fff 6%,var(--gold) 52%,var(--amber) 76%,var(--pink) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+/* quando o texto está quebrado em .word, o recorte tem de ir em cada span:
+   senão os filhos herdam text-fill transparent sem gradiente próprio e somem */
+.grad .word{background:linear-gradient(176deg,#fff 6%,var(--gold) 52%,var(--amber) 76%,var(--pink) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  /* com line-height<1 os acentos saem da caixa e o gradiente não os pinta:
+     o padding estende a área pintada e a margem negativa devolve o layout */
+  padding:.34em .03em .16em;margin:-.34em -.03em -.16em}
+.sub{font-family:'Archivo Black',sans-serif;text-transform:uppercase;color:#fff;
+  letter-spacing:.05em;line-height:1.1}
+.rule{height:7px;border-radius:5px;
+  background:linear-gradient(90deg,transparent,var(--amber),var(--pink),transparent);
+  box-shadow:0 0 34px rgba(255,46,116,.75)}
+.word{display:inline-block;will-change:transform,opacity}
+
+/* ---- cartela de dia ---- */
+.dayghost{position:absolute;font-family:'Anton',sans-serif;line-height:.78;
+  color:rgba(255,255,255,.075);font-size:780px;
+  left:50%;top:50%;transform:translate(-50%,-50%);letter-spacing:-.02em}
+.daywrap{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center}
+.dayname{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:188px;line-height:.9;
+  color:#fff;letter-spacing:.01em;text-shadow:0 14px 70px rgba(0,0,0,.6)}
+.daydate{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:50px;
+  letter-spacing:.2em;color:var(--gold);margin-top:34px}
+
+/* ---- cartão de artista ---- */
+.art{position:absolute;inset:0;display:flex;align-items:center;
+  padding:0 118px;gap:84px}
+.art .txt{flex:1;min-width:0}
+.art .daytag{display:inline-flex;align-items:center;gap:16px;
+  font-family:Inter,sans-serif;font-weight:800;font-size:23px;letter-spacing:.3em;
+  text-transform:uppercase;color:#fff;background:rgba(255,255,255,.085);
+  border:1.5px solid rgba(255,255,255,.26);border-radius:100px;padding:15px 34px;
+  backdrop-filter:blur(8px)}
+.art .daytag i{width:11px;height:11px;border-radius:50%;background:var(--pink);
+  box-shadow:0 0 16px var(--pink);font-style:normal}
+.art .name{font-family:'Anton',sans-serif;text-transform:uppercase;color:#fff;
+  line-height:.86;margin-top:34px;letter-spacing:.005em;
+  text-shadow:0 12px 56px rgba(0,0,0,.6)}
+.art .meta{display:flex;align-items:stretch;gap:26px;margin-top:46px}
+.art .hora{font-family:'Anton',sans-serif;font-size:108px;line-height:.82;color:#07030E;
+  background:linear-gradient(160deg,var(--gold),var(--amber));
+  padding:22px 34px 18px;border-radius:22px;
+  box-shadow:0 18px 56px rgba(255,176,31,.46)}
+.art .hora small{display:block;font-family:Inter,sans-serif;font-weight:800;font-size:17px;
+  letter-spacing:.26em;margin-bottom:8px;opacity:.74}
+.art .dur{display:flex;flex-direction:column;justify-content:center;
+  border-left:5px solid var(--pink);padding-left:28px}
+.art .dur b{font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+  font-size:46px;line-height:1.02;color:#fff;letter-spacing:.02em}
+.art .dur span{font-family:Inter,sans-serif;font-weight:700;font-size:21px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+
+/* moldura da foto */
+.art .frame{position:relative;width:560px;height:730px;flex:none}
+.art .frame .ring{position:absolute;inset:-5px;border-radius:30px;
+  background:linear-gradient(150deg,var(--amber),var(--pink) 45%,var(--violet));
+  filter:blur(1px);opacity:.95}
+.art .frame .inner{position:absolute;inset:0;border-radius:26px;overflow:hidden;
+  background:linear-gradient(160deg,#1A0B22,#2A0F2E 48%,#120718);
+  box-shadow:inset 0 0 90px rgba(0,0,0,.72)}
+.art .frame .inner img{width:100%;height:100%;object-fit:cover;display:block}
+.art .frame .glowcast{position:absolute;inset:-70px;border-radius:50px;
+  background:radial-gradient(60% 55% at 50% 50%,rgba(255,46,116,.42),transparent 72%);
+  filter:blur(44px);z-index:-1}
+/* estado sem foto: espaço reservado, legível e intencional */
+.ph{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:28px;text-align:center;padding:40px}
+.ph svg{width:150px;height:150px;opacity:.5}
+.ph .t{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:27px;
+  letter-spacing:.17em;color:rgba(255,255,255,.62);line-height:1.45}
+.ph .s{font-family:Inter,sans-serif;font-weight:700;font-size:16px;letter-spacing:.26em;
+  text-transform:uppercase;color:rgba(255,255,255,.34)}
+.ph .bars{display:flex;align-items:flex-end;gap:9px;height:62px;margin-top:6px}
+.ph .bars i{width:11px;border-radius:6px;background:linear-gradient(180deg,var(--amber),var(--pink));
+  opacity:.72}
+
+/* ---- cartela final ---- */
+.final{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center}
+.final .bigdate{font-family:'Anton',sans-serif;font-size:300px;line-height:.82;color:#fff;
+  letter-spacing:.005em;text-shadow:0 16px 80px rgba(0,0,0,.6)}
+.final .bigdate em{font-style:normal;color:var(--gold)}
+.final .mes{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:62px;
+  letter-spacing:.21em;color:#fff;margin-top:56px}
+.final .evt{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:126px;
+  line-height:.9;margin-top:52px;letter-spacing:.015em}
+.final .cta{font-family:Inter,sans-serif;font-weight:800;font-size:31px;letter-spacing:.36em;
+  text-transform:uppercase;color:rgba(255,255,255,.9);margin-top:40px}

@@ -1,0 +1,14 @@
+﻿#;entra (s);sai (s);duracao (s);cena;titulo na tela;horario;duracao do show;arquivo de overlay;foto a inserir
+1;0.00;4.59;4.59;intro;Abertura;;;overlays/01_intro.png;
+2;4.59;10.43;5.84;dates;Datas;;;overlays/02_dates.png;
+3;10.43;12.55;2.12;day;Sexta-feira;;;overlays/03_day.png;
+4;12.55;18.79;6.24;artist;Banda San Francisco;21H;3 horas de show;overlays/04_artist.png;assets/fotos/san-francisco.jpg
+5;18.79;28.35;9.56;artist;Banda Passarela;00H30;3 horas de show;overlays/05_artist.png;assets/fotos/passarela.jpg
+6;28.35;30.03;1.68;day;Sábado;;;overlays/06_day.png;
+7;30.03;34.79;4.76;artist;Felipe e Murilo;22H;Grande show;overlays/07_artist.png;assets/fotos/felipe-e-murilo.jpg
+8;34.79;40.79;6.00;artist;Banda Barbarella;00H;3 horas de show;overlays/08_artist.png;assets/fotos/barbarella.jpg
+9;40.79;42.91;2.12;day;Domingo;;;overlays/09_day.png;
+10;42.91;49.51;6.60;artist;Banda Som do Sul;20H;2 a 3 horas de show;overlays/10_artist.png;assets/fotos/som-do-sul.jpg
+11;49.51;54.27;4.76;big;Atrações imperdíveis;;;overlays/11_big.png;
+12;54.27;58.11;3.84;big;Venha fazer parte;;;overlays/12_big.png;
+13;58.11;64.16;6.05;final;Encerramento;;;overlays/13_final.png;

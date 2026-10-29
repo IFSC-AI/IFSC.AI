@@ -1,0 +1,16 @@
+Coloque aqui as fotos das bandas, com estes nomes exatos
+(aceita .jpg, .jpeg, .png ou .webp):
+
+  san-francisco      -> Banda San Francisco
+  passarela          -> Banda Passarela
+  felipe-e-murilo    -> Felipe e Murilo
+  barbarella         -> Banda Barbarella
+  som-do-sul         -> Banda Som do Sul
+
+Depois rode, a partir da pasta do projeto:
+
+  python3 build_timeline.py && node render.js && ./assemble.sh
+
+O pipeline detecta as fotos sozinho e regenera os MP4 já com elas dentro das
+molduras, com zoom lento (Ken Burns). Enquadramento ideal: retrato 3:4
+(por exemplo 1120 x 1460 px).

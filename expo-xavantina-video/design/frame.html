@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Expo Xavantina — frame renderer</title>
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="scenes.css">
+</head><body>
+<canvas id="bg" width="1920" height="1080"></canvas>
+<div id="stage"></div>
+<div id="lockup">
+  <div class="brand"><div class="bmark"></div>
+    <div class="btext">Expo Xavantina<span>Programação de shows</span></div></div>
+  <div class="when">29 · 30 · 31 JAN 2027</div>
+</div>
+<script src="bg.js"></script>
+<script>
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,x)=>a+(b-a)*x;
+const eOutCubic=x=>1-Math.pow(1-x,3);
+const eOutExpo =x=>x>=1?1:1-Math.pow(2,-11*x);
+const eOutBack =x=>{const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const eInOut   =x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+/* 0→1 a partir de `d0`, durando `len` */
+const P=(lt,d0,len)=>clamp((lt-d0)/len,0,1);
+
+const stage=document.getElementById('stage');
+const lockupEl=document.getElementById('lockup');
+const BG=new Background(document.getElementById('bg'));
+let SCENES=[];
+
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;
+  if(html!=null)e.innerHTML=html;return e}
+/* quebra o texto em <span class="word"> para animar palavra por palavra */
+function words(text){return text.split(/\s+/).map(w=>`<span class="word">${w}</span>`).join(' ')}
+function staggerWords(root,lt,d0,step,rise){
+  const ws=root.querySelectorAll('.word');
+  ws.forEach((w,i)=>{
+    const p=eOutExpo(P(lt,d0+i*step,0.55));
+    w.style.opacity=p.toFixed(3);
+    w.style.transform=`translateY(${((1-p)*(rise||48)).toFixed(2)}px)`;
+  });
+}
+
+/* ------------------------------------------------ cenas ------------------------------------------------ */
+
+function sceneIntro(s){
+  const d=el('div','scene'),c=el('div','center');
+  const k=el('div','kicker','Prepare-se para');
+  const m=el('div','mega grad','3 dias'); m.style.fontSize='312px'; m.style.marginTop='14px';
+  const r=el('div','rule'); r.style.cssText='width:520px;margin:30px 0 28px';
+  const sb=el('div','sub',words('de muita música, alegria e grandes shows'));
+  sb.style.cssText='font-size:56px;max-width:1260px;line-height:1.16';
+  c.append(k,m,r,sb); d.append(c);
+  s.anim=(lt)=>{
+    const p1=eOutExpo(P(lt,0,.6));
+    k.style.opacity=p1; k.style.letterSpacing=lerp(.72,.44,p1)+'em';
+    const p2=eOutExpo(P(lt,.22,.75));
+    m.style.opacity=p2;
+    m.style.transform=`scale(${lerp(.84,1,p2).toFixed(4)})`;
+    m.style.filter=`blur(${((1-p2)*16).toFixed(1)}px)`;
+    const p3=eOutCubic(P(lt,.6,.5));
+    r.style.opacity=p3; r.style.transform=`scaleX(${p3.toFixed(3)})`;
+    staggerWords(sb,lt,.78,.055,52);
+  };
+  return d;
+}
+
+function sceneDates(s){
+  const d=el('div','scene'),c=el('div','center');
+  const k=el('div','kicker','Uma programação especial');
+  const m=el('div','mega'); m.style.cssText='font-size:252px;margin-top:22px;display:flex;gap:40px;align-items:baseline';
+  const nums=['29','30','31'].map((n,i)=>{
+    const sp=el('span','grad',n); sp.style.display='inline-block'; return sp});
+  const dots=[];
+  m.append(nums[0]);
+  [1,2].forEach(i=>{const dt=el('span',null,'·');
+    dt.style.cssText='color:var(--pink);font-size:170px;display:inline-block';
+    dots.push(dt); m.append(dt,nums[i])});
+  const sb=el('div','sub','de janeiro de 2027'); sb.style.cssText='font-size:60px;margin-top:26px';
+  const k2=el('div','kicker pink','espera por você');
+  k2.style.cssText='font-size:27px;margin-top:40px';
+  c.append(k,m,sb,k2); d.append(c);
+  s.anim=(lt)=>{
+    k.style.opacity=eOutExpo(P(lt,0,.5));
+    nums.forEach((n,i)=>{const p=eOutBack(P(lt,.18+i*.15,.6));
+      n.style.opacity=clamp(p,0,1); n.style.transform=`scale(${lerp(.6,1,clamp(p,0,1.2)).toFixed(3)})`});
+    dots.forEach((dt,i)=>{const p=eOutExpo(P(lt,.34+i*.15,.4));
+      dt.style.opacity=(p*.95).toFixed(3); dt.style.transform=`scale(${lerp(.4,1,p).toFixed(3)})`});
+    const p=eOutExpo(P(lt,.72,.6));
+    sb.style.opacity=p; sb.style.transform=`translateY(${((1-p)*38).toFixed(1)}px)`;
+    k2.style.opacity=eOutExpo(P(lt,1.0,.6));
+  };
+  return d;
+}
+
+function sceneDay(s){
+  const d=el('div','scene');
+  const ghost=el('div','dayghost',s.num);
+  const w=el('div','daywrap');
+  const nm=el('div','dayname',words(s.dia));
+  const dt=el('div','daydate',s.data);
+  w.append(nm,dt); d.append(ghost,w);
+  s.dim=.95;
+  s.anim=(lt)=>{
+    const g=eOutExpo(P(lt,0,1.1));
+    ghost.style.opacity=g; ghost.style.transform=
+      `translate(-50%,-50%) scale(${lerp(1.3,1,g).toFixed(4)})`;
+    staggerWords(nm,lt,.1,.07,70);
+    const p=eOutCubic(P(lt,.42,.55));
+    dt.style.opacity=p; dt.style.letterSpacing=lerp(.46,.2,p)+'em';
+  };
+  return d;
+}
+
+const MIC_SVG=`<svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)"
+ stroke-width="1.3" stroke-linecap="round"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 1 0-7 0v6A3.5 3.5 0 0 0 12 15Z"/>
+ <path d="M5.5 10.5v1a6.5 6.5 0 0 0 13 0v-1"/><path d="M12 18v3.2"/><path d="M8.4 21.4h7.2"/></svg>`;
+
+function sceneArtist(s){
+  const d=el('div','scene');
+  const a=el('div','art'); if(s.flip) a.style.flexDirection='row-reverse';
+  /* bloco de texto */
+  const txt=el('div','txt');
+  const tag=el('div','daytag',`<i></i>${s.tag}`);
+  const nm=el('div','name',words(s.nome));
+  nm.style.fontSize=(s.nomeSize||118)+'px';
+  const meta=el('div','meta');
+  const hora=el('div','hora',`<small>${s.horaLabel||'A partir das'}</small>${s.hora}`);
+  const dur=el('div','dur',`<span>${s.durLabel||'Duração'}</span><b>${s.dur}</b>`);
+  meta.append(hora,dur); txt.append(tag,nm,meta);
+  /* moldura da foto */
+  const fr=el('div','frame');
+  const cast=el('div','glowcast'), ring=el('div','ring'), inner=el('div','inner');
+  if(s.foto){
+    const img=document.createElement('img'); img.src=s.foto; inner.append(img);
+    s._img=img;
+  }else{
+    const ph=el('div','ph');
+    const bars=el('div','bars','<i></i>'.repeat(7));
+    ph.innerHTML=MIC_SVG+`<div class="t">${s.nome}</div><div class="s">espaço para a foto</div>`;
+    ph.append(bars); inner.append(ph); s._bars=bars.querySelectorAll('i');
+  }
+  fr.append(cast,ring,inner);
+  a.append(txt,fr); d.append(a);
+  s.dim=.86;
+  s._fr=fr; s._inner=inner;
+  s.anim=(lt,dur_)=>{
+    /* moldura entra revelando de baixo pra cima + leve ken burns no hold */
+    const p=eOutExpo(P(lt,.1,.9));
+    fr.style.opacity=p;
+    fr.style.transform=`translateY(${((1-p)*64).toFixed(1)}px) scale(${lerp(.93,1,p).toFixed(4)})`;
+    inner.style.clipPath=`inset(${((1-p)*100).toFixed(2)}% 0% 0% 0% round 26px)`;
+    const kb=1+ (lt/Math.max(dur_,1))*0.05;
+    if(s._img) s._img.style.transform=`scale(${kb.toFixed(4)})`;
+    if(s._bars) s._bars.forEach((b,i)=>{
+      b.style.height=(16+Math.abs(Math.sin(lt*3.1+i*.75))*44).toFixed(1)+'px'});
+    /* texto */
+    const pt=eOutExpo(P(lt,0,.6));
+    tag.style.opacity=pt; tag.style.transform=`translateX(${((1-pt)*-40).toFixed(1)}px)`;
+    staggerWords(nm,lt,.2,.07,60);
+    const pm=eOutBack(P(lt,.6,.7));
+    hora.style.opacity=clamp(pm,0,1);
+    hora.style.transform=`scale(${lerp(.74,1,clamp(pm,0,1.15)).toFixed(4)})`;
+    const pd=eOutExpo(P(lt,.78,.6));
+    dur.style.opacity=pd; dur.style.transform=`translateX(${((1-pd)*34).toFixed(1)}px)`;
+  };
+  return d;
+}
+
+function sceneBig(s){
+  const d=el('div','scene'),c=el('div','center');
+  const k=s.kicker?el('div','kicker',s.kicker):null;
+  const m=el('div','mega grad',words(s.titulo));
+  m.style.fontSize=(s.size||150)+'px'; m.style.marginTop='34px';
+  const r=el('div','rule'); r.style.cssText='width:460px;margin:46px 0 0';
+  const sb=s.sub?el('div','sub',s.sub):null;
+  if(sb) sb.style.cssText='font-size:48px;margin-top:30px';
+  if(k)c.append(k); c.append(m,r); if(sb)c.append(sb);
+  d.append(c);
+  s.anim=(lt)=>{
+    if(k)k.style.opacity=eOutExpo(P(lt,0,.5));
+    staggerWords(m,lt,.14,.075,62);
+    const p=eOutCubic(P(lt,.5,.5));
+    r.style.opacity=p; r.style.transform=`scaleX(${p.toFixed(3)})`;
+    if(sb){const q=eOutExpo(P(lt,.72,.55));
+      sb.style.opacity=q; sb.style.transform=`translateY(${((1-q)*34).toFixed(1)}px)`}
+  };
+  return d;
+}
+
+function sceneFinal(s){
+  const d=el('div','scene'),c=el('div','final');
+  const bd=el('div','bigdate','29 <em>a</em> 31');
+  const mes=el('div','mes','de janeiro de 2027');
+  const evt=el('div','evt grad','Expo Xavantina');
+  const cta=el('div','cta','Esperamos por você');
+  c.append(bd,mes,evt,cta); d.append(c);
+  s.hideLockup=true;
+  s.anim=(lt)=>{
+    const p=eOutExpo(P(lt,0,.8));
+    bd.style.opacity=p; bd.style.transform=`scale(${lerp(.86,1,p).toFixed(4)})`;
+    const q=eOutExpo(P(lt,.34,.6));
+    mes.style.opacity=q; mes.style.letterSpacing=lerp(.46,.21,q)+'em';
+    const r=eOutExpo(P(lt,.62,.8));
+    evt.style.opacity=r; evt.style.transform=`translateY(${((1-r)*46).toFixed(1)}px)`;
+    cta.style.opacity=eOutExpo(P(lt,1.15,.7));
+  };
+  return d;
+}
+
+const BUILDERS={intro:sceneIntro,dates:sceneDates,day:sceneDay,
+                artist:sceneArtist,big:sceneBig,final:sceneFinal};
+
+window.initTimeline=function(tl){
+  stage.innerHTML=''; SCENES=[];
+  for(const raw of tl.scenes){
+    const s=Object.assign({},raw);
+    const node=BUILDERS[s.type](s);
+    s.el=node; stage.append(node); SCENES.push(s);
+  }
+  return SCENES.length;
+};
+
+window.renderAt=function(t){
+  let flash=0, dim=1, hideLock=0;
+  for(const s of SCENES){
+    const lt=t-s.start, dur=s.end-s.start;
+    const inD=s.inD||0.42, outD=s.outD||0.38;
+    let op=0;
+    if(lt>-0.05 && lt<dur+outD+0.05)
+      op=clamp(lt/inD,0,1)*clamp((dur+outD-lt)/outD,0,1);
+    if(op<=0.002){ s.el.style.opacity='0'; s.el.style.visibility='hidden'; continue }
+    s.el.style.visibility='visible';
+    s.el.style.opacity=op.toFixed(4);
+    s.anim(lt,dur);
+    /* estouro de luz em cada virada: mascara o corte e dá energia de clipe musical */
+    const fl=s.type==='day'?1.0:(s.type==='final'?0.30:0.42);
+    flash=Math.max(flash,Math.pow(clamp(1-lt/0.34,0,1),2.2)*op*fl);
+    if(s.dim!=null) dim=Math.min(dim,lerp(1,s.dim,op));
+    if(s.hideLockup) hideLock=Math.max(hideLock,op);
+  }
+  lockupEl.style.opacity=(1-hideLock).toFixed(3);
+  BG.draw(t,{dim,flash});
+};
+
+/* Modos de exportação em camadas, para montar o projeto no CapCut:
+   'bg'      = só o fundo animado, sem texto
+   'overlay' = só os grafismos, com fundo transparente e a janela da foto vazada
+               (a foto entra numa faixa por baixo e aparece dentro da moldura) */
+window.setExportMode=function(mode){
+  const bg=document.getElementById('bg');
+  if(mode==='bg'){ stage.style.display='none'; lockupEl.style.display='none'; return }
+  if(mode==='overlay'){
+    bg.style.display='none';
+    document.documentElement.style.background='transparent';
+    document.body.style.background='transparent';
+    for(const s of SCENES){
+      if(s.type!=='artist') continue;
+      const inner=s.el.querySelector('.frame .inner');
+      if(inner) inner.style.background='transparent';
+      /* o .ring é um retângulo cheio atrás do inner; com o inner transparente
+         ele tapava a janela. A máscara deixa só a borda, vazando o miolo. */
+      const ring=s.el.querySelector('.frame .ring');
+      if(ring){
+        ring.style.padding='6px'; ring.style.boxSizing='border-box';
+        const m='linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)';
+        ring.style.webkitMask=m; ring.style.mask=m;
+        ring.style.webkitMaskComposite='xor'; ring.style.maskComposite='exclude';
+      }
+      const ph=s.el.querySelector('.ph'); if(ph) ph.style.display='none';
+      const cast=s.el.querySelector('.glowcast'); if(cast) cast.style.display='none';
+    }
+  }
+};
+
+window.fontsReady=()=>document.fonts.ready.then(()=>document.fonts.load("400 100px Anton")
+  .then(()=>document.fonts.load("400 100px 'Archivo Black'")).then(()=>true));
+</script></body></html>
