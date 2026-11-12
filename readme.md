@@ -20,7 +20,7 @@ O IFSC.AI busca facilitar esse acesso por meio de um agente de Inteligência Art
 
 ## Estado atual do projeto
 
-- **Frontend:** site desenvolvido com HTML, CSS e JavaScript e hospedado no Vercel.
+- **Frontend:** site de página única desenvolvido com HTML, CSS e JavaScript e hospedado no Vercel.
 - **Backend:** API própria desenvolvida em Python com FastAPI e publicada no Vercel.
 - **Banco de dados:** Supabase/PostgreSQL conectado à API.
 - **Conteúdo dinâmico:** o frontend consome a API do backend e recebe os conteúdos cadastrados no banco, sem depender exclusivamente de textos fixos no HTML.
@@ -32,7 +32,7 @@ O IFSC.AI busca facilitar esse acesso por meio de um agente de Inteligência Art
 - **API — status:** [https://ifscai-api.vercel.app/](https://ifscai-api.vercel.app/)
 - **API — conteúdos:** [https://ifscai-api.vercel.app/api/conteudos](https://ifscai-api.vercel.app/api/conteudos)
 
-A rota de conteúdos consulta o Supabase e, no estado atual, retorna os 31 registros cadastrados na tabela `conteudos`.
+A rota de conteúdos consulta o Supabase e, no estado atual, retorna os 41 registros cadastrados na tabela `conteudos`.
 
 ## Funcionalidades
 
@@ -122,9 +122,9 @@ Estrutura resumida dos principais arquivos utilizados no site e na API:
 IFSC.AI/
 ├── frontend/
 │   ├── index.html
-│   ├── quem-nos-somos.html
 │   ├── style.css
-│   └── script.js
+│   ├── script.js
+│   └── vercel.json
 │
 ├── backend/
 │   ├── main.py
@@ -135,8 +135,8 @@ IFSC.AI/
 │   └── Base de conhecimento IFSC AI — IFSC Câmpus Chapecó Markdown.md
 │
 ├── .gitignore
-└── README.md
-└── ifscai.json
+├── README.md
+├── ifscai.json
 └── Wireframe_IFSC.AI.pdf
 ```
 
@@ -144,15 +144,17 @@ A API de conteúdos do site utiliza `backend/main.py` como ponto de entrada do F
 
 ## Site informacional
 
-O site funciona como uma central de ajuda para apresentar o projeto e facilitar o acesso ao agente no WhatsApp.
+O site funciona como uma central de ajuda de página única: todas as seções ficam no `index.html`, e a navegação da barra superior e do rodapé leva a cada uma delas por âncoras.
 
 Suas principais seções são:
 
-- **Início:** apresentação do IFSC.AI e acesso ao agente.
-- **Como usar:** instruções para iniciar uma conversa pelo WhatsApp.
-- **Quem nós somos:** apresentação do projeto e da equipe.
-- **Perguntas frequentes:** respostas às dúvidas sobre o funcionamento da solução.
-- **Contato:** direcionamento ao agente e aos canais de atendimento pertinentes.
+- **Início** (`#inicio`): apresentação do IFSC.AI e acesso ao agente.
+- **Como usar** (`#como-usar`): instruções para iniciar uma conversa pelo WhatsApp.
+- **Quem nós somos** (`#quem-somos`): apresentação dos estudantes responsáveis e do propósito do projeto, com a continuação "O que nos move" (`#proposito`).
+- **Perguntas frequentes** (`#perguntas`): respostas às dúvidas sobre o funcionamento da solução.
+- **Contato** (`#contato`): direcionamento ao agente e aos canais de atendimento pertinentes.
+
+A antiga página `quem-nos-somos.html` foi incorporada ao `index.html`. O endereço antigo redireciona para `/#quem-somos` por meio do arquivo `frontend/vercel.json`.
 
 A identidade visual utiliza um tema escuro, com destaque em verde e a fonte EB Garamond.
 
@@ -172,7 +174,7 @@ A API foi desenvolvida em Python com FastAPI. Ela consulta a tabela `conteudos` 
 
 Exemplo de chave: `hero_titulo`.
 
-A rota `/api/conteudos` retorna registros com os campos `id`, `created_at`, `chave`, `titulo`, `descricao` e `url`. No estado atual, os 31 conteúdos do site estão cadastrados na tabela `conteudos`.
+A rota `/api/conteudos` retorna registros com os campos `id`, `created_at`, `chave`, `titulo`, `descricao` e `url`. No estado atual, os 41 conteúdos do site estão cadastrados na tabela `conteudos`.
 
 ### Banco de dados
 
@@ -184,6 +186,21 @@ O banco utiliza PostgreSQL, gerenciado pelo Supabase. A tabela `conteudos` cont�
 - **URL:** endereço de destino de links, quando aplicável.
 
 O JavaScript solicita os dados à API e associa cada registro à sua chave para atualizar a interface. O backend é responsável por consultar o banco e disponibilizar os dados ao frontend.
+
+As chaves seguem prefixos que indicam a parte da página a que pertencem:
+
+| Prefixo da chave | Parte da página |
+| --- | --- |
+| `marca`, `footer_marca` | Marca do cabeçalho e do rodapé |
+| `nav_*`, `footer_nav_*`, `btn_*` | Links de navegação e botão do WhatsApp |
+| `hero_*` | Início |
+| `como_usar_*`, `passo_*` | Como usar |
+| `quem_*`, `proposito_*` | Quem nós somos e O que nos move |
+| `faq_*` | Perguntas frequentes |
+| `contato_*` | Contato |
+| `footer_*` | Rodapé |
+
+Para criar uma nova seção, cadastre as chaves na tabela `conteudos` e associe cada uma ao elemento correspondente no `script.js`.
 
 ## Hospedagem
 
