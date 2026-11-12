@@ -95,6 +95,32 @@ function atualizarLink(conteudos, chave, seletor) {
 
 
 /**
+ * Preenche uma lista de cards (título em h3 e descrição em p)
+ * seguindo a ordem das chaves informadas.
+ */
+function atualizarCards(conteudos, chaves, seletor) {
+  const cards = document.querySelectorAll(seletor);
+
+  cards.forEach((card, indice) => {
+    const conteudo = obterConteudo(conteudos, chaves[indice]);
+
+    if (!conteudo) return;
+
+    const titulo = card.querySelector('h3');
+    const descricao = card.querySelector('p');
+
+    if (titulo && typeof conteudo.titulo === 'string') {
+      titulo.textContent = conteudo.titulo;
+    }
+
+    if (descricao && typeof conteudo.descricao === 'string') {
+      descricao.textContent = conteudo.descricao;
+    }
+  });
+}
+
+
+/**
  * Atualiza a marca do cabeçalho preservando o destaque visual.
  */
 function atualizarMarcaCabecalho(conteudos) {
@@ -196,30 +222,50 @@ function atualizarTituloPrincipal(conteudos) {
  * Atualiza os três passos de utilização.
  */
 function carregarPassos(conteudos) {
-  const chaves = [
-    'passo_1',
-    'passo_2',
-    'passo_3',
-  ];
+  atualizarCards(
+    conteudos,
+    ['passo_1', 'passo_2', 'passo_3'],
+    '#como-usar .steps .card'
+  );
+}
 
-  const cards = document.querySelectorAll('#como-usar .steps .card');
 
-  cards.forEach((card, indice) => {
-    const conteudo = obterConteudo(conteudos, chaves[indice]);
+/**
+ * Atualiza a seção "Quem nós somos".
+ */
+function atualizarQuemSomos(conteudos) {
+  atualizarTexto(conteudos, 'quem_eyebrow',
+    '#quem-somos .eyebrow');
 
-    if (!conteudo) return;
+  atualizarTexto(conteudos, 'quem_titulo',
+    '#quem-somos h2');
 
-    const titulo = card.querySelector('h3');
-    const descricao = card.querySelector('p');
+  atualizarTexto(conteudos, 'quem_descricao',
+    '#quem-somos .lead', 'descricao');
 
-    if (titulo && typeof conteudo.titulo === 'string') {
-      titulo.textContent = conteudo.titulo;
-    }
+  atualizarTexto(conteudos, 'quem_paragrafo_2',
+    '#quem-paragrafo-2', 'descricao');
 
-    if (descricao && typeof conteudo.descricao === 'string') {
-      descricao.textContent = conteudo.descricao;
-    }
-  });
+  atualizarTexto(conteudos, 'quem_paragrafo_3',
+    '#quem-paragrafo-3', 'descricao');
+}
+
+
+/**
+ * Atualiza a seção "O que nos move" (continuação de Quem nós somos).
+ */
+function carregarProposito(conteudos) {
+  atualizarTexto(conteudos, 'proposito_eyebrow',
+    '#proposito .eyebrow');
+
+  atualizarTexto(conteudos, 'proposito_titulo',
+    '#proposito h2');
+
+  atualizarCards(
+    conteudos,
+    ['proposito_problema', 'proposito_proposta', 'proposito_compromisso'],
+    '#proposito .card-grid .card'
+  );
 }
 
 
@@ -275,7 +321,7 @@ function atualizarPagina(conteudos) {
     '.nav-links a[href="#como-usar"]');
 
   atualizarLink(conteudos, 'nav_quem_nos_somos',
-    '.nav-links a[href="quem-nos-somos.html"]');
+    '.nav-links a[href="#quem-somos"]');
 
   atualizarLink(conteudos, 'nav_perguntas',
     '.nav-links a[href="#perguntas"]');
@@ -310,6 +356,12 @@ function atualizarPagina(conteudos) {
   carregarPassos(conteudos);
 
 
+  // Seção Quem nós somos
+  atualizarQuemSomos(conteudos);
+
+  carregarProposito(conteudos);
+
+
   // Perguntas frequentes
   atualizarTexto(conteudos, 'faq_eyebrow',
     '#perguntas .eyebrow');
@@ -341,7 +393,7 @@ function atualizarPagina(conteudos) {
     '.footer-links a[href="#como-usar"]');
 
   atualizarLink(conteudos, 'footer_nav_quem_nos_somos',
-    '.footer-links a[href="quem-nos-somos.html"]');
+    '.footer-links a[href="#quem-somos"]');
 
   atualizarLink(conteudos, 'footer_nav_perguntas',
     '.footer-links a[href="#perguntas"]');
